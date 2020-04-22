@@ -7,6 +7,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ObjectBinder", "ObjectBinde
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OptionExtras", "OptionExtras\OptionExtras.csproj", "{A1DB5470-7DFB-41E2-9821-CAD83A464534}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "externals", "externals", "{CE848453-DA1A-41AF-BC2B-449E1D803D34}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "System.CommandLine", "..\command-line-api\src\System.CommandLine\System.CommandLine.csproj", "{1D0045AF-F1B6-4A91-8F4D-352169BE8EB4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,9 +25,16 @@ Global
 		{A1DB5470-7DFB-41E2-9821-CAD83A464534}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A1DB5470-7DFB-41E2-9821-CAD83A464534}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A1DB5470-7DFB-41E2-9821-CAD83A464534}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1D0045AF-F1B6-4A91-8F4D-352169BE8EB4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1D0045AF-F1B6-4A91-8F4D-352169BE8EB4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1D0045AF-F1B6-4A91-8F4D-352169BE8EB4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1D0045AF-F1B6-4A91-8F4D-352169BE8EB4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{1D0045AF-F1B6-4A91-8F4D-352169BE8EB4} = {CE848453-DA1A-41AF-BC2B-449E1D803D34}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {27113E03-1148-43F7-AAE7-B295AD5BD695}
