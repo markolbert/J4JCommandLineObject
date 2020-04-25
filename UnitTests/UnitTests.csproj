@@ -80,6 +80,14 @@
       <Project>{1d0045af-f1b6-4a91-8f4d-352169be8eb4}</Project>
       <Name>System.CommandLine</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ObjectBinder\ObjectBinder.csproj">
+      <Project>{817e52f4-cdd4-4a1d-bbaf-5bd7e68da8da}</Project>
+      <Name>ObjectBinder</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OptionExtras\OptionExtras.csproj">
+      <Project>{a1db5470-7dfb-41e2-9821-cad83a464534}</Project>
+      <Name>OptionExtras</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Analyzer Include="..\packages\xunit.analyzers.0.10.0\analyzers\dotnet\cs\xunit.analyzers.dll" />
