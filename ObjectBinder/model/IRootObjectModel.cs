@@ -12,19 +12,26 @@ namespace J4JSoftware.CommandLine
 {
     public interface IRootObjectModel
     {
-        IObjectBinder ObjectBinder { get; }
-        Command Command { get; }
-        ObjectModels ChildModels { get; }
-        ParseResult ParseResult { get; }
-        ParseStatus ParseStatus { get; }
+        //IObjectBinder ObjectBinder { get; }
+        //Command Command { get; }
+        //ObjectModels ChildModels { get; }
+        //ParseResult ParseResult { get; }
+        //ParseStatus ParseStatus { get; }
+
+        ParseStatus GetParseStatus();
+        ParseResult GetParseResult();
+        void AddChildCommand( Command childCommand );
 
         bool Initialize(string[] args, IConsole console = null);
         bool Initialize(string args, IConsole console = null);
         bool Initialize(CommandLineBuilder builder, string[] args, IConsole console = null);
+
+        //int InvokeParseResult( IConsole console = null );
     }
 
     public interface IObjectModel : IRootObjectModel
     {
+        string GetCommandName();
         void DefineBindings();
     }
 }

@@ -4,6 +4,6 @@ namespace J4JSoftware.CommandLine
 {
     public class ObjectModels : KeyedCollection<string, IObjectModel>
     {
-        protected override string GetKeyForItem( IObjectModel item ) => item.Command.Name;
+        protected override string GetKeyForItem( IObjectModel item ) => item.GetCommandName();
     }
 }

@@ -32,14 +32,14 @@ namespace J4JSoftware.CommandLine
 
             base.Initialize( builder, args, console );
 
-            ParseResult.Invoke(console);
+            InvokeParseResult( console );
 
-            foreach (var childModel in ChildModels)
+            foreach (var childModel in ChildModels )
             {
-                childModel.ParseResult.Invoke(console);
+                childModel.GetParseResult()?.Invoke( console );
             }
 
-            return ParseStatus.IsValid;
+            return GetParseStatus()?.IsValid ?? false;
         }
     }
 }

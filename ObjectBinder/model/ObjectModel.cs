@@ -25,7 +25,7 @@ namespace J4JSoftware.CommandLine
             ObjectBinder = (IObjectBinder) Activator.CreateInstance(
                 objBinderType, this, cmdName, parentModel, cmdDescription );
 
-            parentModel.Command.AddCommand( ObjectBinder.Command );
+            parentModel.AddChildCommand( ObjectBinder.Command );
         }
 
         public void DefineBindings() => DefineBindings( ObjectBinder );

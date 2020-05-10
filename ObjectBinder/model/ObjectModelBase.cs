@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.CommandLine;
@@ -9,25 +10,31 @@ using System.Linq;
 namespace J4JSoftware.CommandLine
 {
     public class ObjectModelBase
+
     {
         protected ObjectModelBase()
         {
         }
 
-        public IObjectBinder ObjectBinder { get; protected set; }
+        protected IObjectBinder ObjectBinder { get; set; }
+        protected Command Command => ObjectBinder?.Command;
+        protected ObjectModels ChildModels { get; private set; } = new ObjectModels();
 
-        public ParseResult ParseResult { get; protected set; }
-        public ParseStatus ParseStatus { get; protected set; }
-        public Command Command => ObjectBinder.Command;
+        protected ParseResult ParseResult { get; set; }
+        protected ParseStatus ParseStatus { get; set; }
 
-        public ObjectModels ChildModels { get; } = new ObjectModels();
+        public string GetCommandName() => Command?.Name;
+        public ParseStatus GetParseStatus() => ParseStatus;
+        public ParseResult GetParseResult() => ParseResult;
+
+        public void AddChildCommand( Command childCommand ) => Command.AddCommand( childCommand );
 
         // by default don't look for help or version flags, as that should be
         // taken care of in the RootObjectModel
         protected virtual CommandLineBuilder GetCommandLineBuilder() =>
-            new CommandLineBuilder(ObjectBinder.Command)
+            new CommandLineBuilder( ObjectBinder.Command )
                 .UseDefaults()
-                .UseObjectBinder(ObjectBinder);
+                .UseObjectBinder( ObjectBinder );
 
         protected virtual void DefineBindings( IObjectBinder objBinder )
         {
@@ -37,13 +44,13 @@ namespace J4JSoftware.CommandLine
         {
             DefineBindings( ObjectBinder );
 
-            foreach (var childModel in ChildModels)
+            foreach( var childModel in ChildModels )
             {
                 childModel.DefineBindings();
             }
         }
 
-        protected string[] ExtractRelevantTokens( 
+        protected string[] ExtractRelevantTokens(
             CommandLineConfiguration cmdLineConfig,
             string[] args )
         {
@@ -69,7 +76,7 @@ namespace J4JSoftware.CommandLine
             // For regular Commands there will be an Argument type token whose
             // value matches cmdName. Note that for regular Commands we skip
             // the first token because it's not relevant
-            foreach( var token in tokenized.Tokens.Skip(ObjectBinder.Command is RootCommand ? 0 : 1) )
+            foreach( var token in tokenized.Tokens.Skip( ObjectBinder.Command is RootCommand ? 0 : 1 ) )
             {
                 switch( token.Type )
                 {
@@ -124,16 +131,16 @@ namespace J4JSoftware.CommandLine
             return retVal.ToArray();
         }
 
-        public virtual bool Initialize(string[] args, IConsole console = null) =>
-            Initialize(GetCommandLineBuilder(), args, console);
+        public virtual bool Initialize( string[] args, IConsole console = null ) =>
+            Initialize( GetCommandLineBuilder(), args, console );
 
-        public virtual bool Initialize(string args, IConsole console = null)
+        public virtual bool Initialize( string args, IConsole console = null )
         {
             var splitter = CommandLineStringSplitter.Instance;
 
-            var splitArgs = splitter.Split(args).ToArray();
+            var splitArgs = splitter.Split( args ).ToArray();
 
-            return Initialize(GetCommandLineBuilder(), splitArgs, console);
+            return Initialize( GetCommandLineBuilder(), splitArgs, console );
         }
 
         public virtual bool Initialize( CommandLineBuilder builder, string[] args, IConsole console = null )
@@ -144,19 +151,25 @@ namespace J4JSoftware.CommandLine
 
             ParseStatus = new ParseStatus()
             {
-                HelpRequested = ParseResult.FindResultFor(builder.HelpOption) != null,
+                HelpRequested = ParseResult.FindResultFor( builder.HelpOption ) != null,
                 FoundErrors = ParseResult.Errors.Count > 0
             };
 
-            foreach (var childModel in ChildModels)
+            foreach( var childModel in ChildModels )
             {
-                var result = childModel.Initialize(args, console);
+                var result = childModel.Initialize( args, console );
 
-                ParseStatus.FoundErrors |= childModel.ParseStatus.FoundErrors;
-                ParseStatus.HelpRequested |= childModel.ParseStatus.HelpRequested;
+                var childStatus = childModel.GetParseStatus();
+                ParseStatus.FoundErrors |= childStatus.FoundErrors;
+                ParseStatus.HelpRequested |= childStatus.HelpRequested;
             }
 
             return ParseStatus.IsValid;
+        }
+
+        public int InvokeParseResult( IConsole console = null )
+        {
+            return ParseResult?.Invoke( console ) ?? 1;
         }
     }
 }
